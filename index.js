@@ -41,12 +41,14 @@ var app = express();
               });
       }else{
         res.status(403).send({ 
-                error: "Wrong Request"
+                error: "Wrong Request",
+                headers: req.headers
               });
       }
     }else{
       res.status(403).send({ 
-        error: "Wrong Request"
+        error: "Wrong Request",
+        headers: req.headers
       });
     }    
   });
