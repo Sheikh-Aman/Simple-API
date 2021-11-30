@@ -26,12 +26,19 @@ var app = express();
     let timeStr = ""+day +"/"+(month + 1)+"/"+year+" "+hour+":"+minutes+":"+seconds+"."+milliseconds+" UTC Offset (hours): "+offset;
 
     if(!req.headers['cache-control']){
-      let accepted_agents = ["Mozilla", "Chrome", "Safari", "Android", "iOS"];
+      console.log("1");
+      // let accepted_agents = ["Mozilla", "Chrome", "Safari", "Android", "iOS"];
+      // let accepted_agents = ["iOS"];
 
       if(!accepted_agents.some(e => req.headers['user-agent'].includes(e))){
+        console.log("2");
         shouldSend200 = false;
+      }else{
+        console.log("3");
       }
-    }   
+    }else{
+      console.log("4");
+    }
 
     if(shouldSend200){
       res.send({ 
