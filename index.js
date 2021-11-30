@@ -32,7 +32,7 @@ var app = express();
                   milliseconds: milliseconds,
                   utc_offset_hours: offset
                 },
-                headers: req.headers['cache-control']
+                headers: req.headers
               });
   });
 
