@@ -21,7 +21,12 @@ var app = express();
 
     let timeStr = ""+day +"/"+(month + 1)+"/"+year+" "+hour+":"+minutes+":"+seconds+"."+milliseconds+" UTC Offset (hours): "+offset;
 
-    res.send({ date_time_str: ""+timeStr,
+    if(!req.headers['cache-control']){
+      let accepted_agents = ["Mozilla", "Chrome", "Safari", "Android", "iOS"];
+
+      if(accepted_agents.some(e => req.headers['user-agent'].includes(e))){
+        res.send({ 
+                date_time_str: ""+timeStr,
                 values:{
                   day: day,
                   month: (month + 1),
@@ -34,6 +39,16 @@ var app = express();
                 },
                 headers: req.headers
               });
+      }else{
+        res.status(403).send({ 
+                error: "Wrong Request"
+              });
+      }
+    }else{
+      res.status(403).send({ 
+        error: "Wrong Request"
+      });
+    }    
   });
 
   app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
