@@ -14,7 +14,11 @@ var app = express();
   app.get('/', (req, res) => res.render('pages/index'))
 
   app.use('/current_time', (req, res) => {
+    let shouldSend200 = true;
+
     console.debug("request", req.headers);
+
+
     let date = new Date();
     const [month, day, year]       = [date.getMonth(), date.getDate(), date.getFullYear()];
     const [hour, minutes, seconds, milliseconds, offset] = [date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds(), (date.getTimezoneOffset()/60)];
@@ -25,32 +29,31 @@ var app = express();
       let accepted_agents = ["Mozilla", "Chrome", "Safari", "Android", "iOS"];
 
       if(accepted_agents.some(e => req.headers['user-agent'].includes(e))){
-        res.send({ 
-                date_time_str: ""+timeStr,
-                values:{
-                  day: day,
-                  month: (month + 1),
-                  year: year,
-                  hour: hour,
-                  minutes: minutes,
-                  seconds: seconds,
-                  milliseconds: milliseconds,
-                  utc_offset_hours: offset
-                },
-                headers: req.headers
-              });
-      }else{
-        res.status(403).send({ 
-                error: "Wrong Request",
-                headers: req.headers
-              });
+        shouldSend200 = true;
       }
+    }   
+
+    if(shouldSend200){
+      res.send({ 
+        date_time_str: ""+timeStr,
+        values:{
+          day: day,
+          month: (month + 1),
+          year: year,
+          hour: hour,
+          minutes: minutes,
+          seconds: seconds,
+          milliseconds: milliseconds,
+          utc_offset_hours: offset
+        },
+        headers: req.headers
+      });
     }else{
       res.status(403).send({ 
         error: "Wrong Request",
         headers: req.headers
       });
-    }    
+    }
   });
 
   app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
