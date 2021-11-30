@@ -16,7 +16,7 @@ var app = express();
   app.use('/current_time', (req, res) => {
     let shouldSend200 = true;
 
-    console.debug("request", req.headers);
+    // console.debug("request", req.headers);
 
 
     let date = new Date();
@@ -26,18 +26,11 @@ var app = express();
     let timeStr = ""+day +"/"+(month + 1)+"/"+year+" "+hour+":"+minutes+":"+seconds+"."+milliseconds+" UTC Offset (hours): "+offset;
 
     if(!req.headers['cache-control']){
-      // console.log("1");
       let accepted_agents = ["Mozilla", "Chrome", "Safari"];
-      // let accepted_agents = ["iOS"];
 
       if(!accepted_agents.some(e => req.headers['user-agent'].includes(e))){
-        // console.log("2");
         shouldSend200 = false;
-      }else{
-        // console.log("3");
       }
-    }else{
-      // console.log("4");
     }
 
     if(shouldSend200){
@@ -52,13 +45,11 @@ var app = express();
           seconds: seconds,
           milliseconds: milliseconds,
           utc_offset_hours: offset
-        },
-        headers: req.headers
+        }
       });
     }else{
       res.status(403).send({ 
-        error: "Wrong Request",
-        headers: req.headers
+        error: "Wrong Request"
       });
     }
   });
