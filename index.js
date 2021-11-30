@@ -28,8 +28,8 @@ var app = express();
     if(!req.headers['cache-control']){
       let accepted_agents = ["Mozilla", "Chrome", "Safari", "Android", "iOS"];
 
-      if(accepted_agents.some(e => req.headers['user-agent'].includes(e))){
-        shouldSend200 = true;
+      if(!accepted_agents.some(e => req.headers['user-agent'].includes(e))){
+        shouldSend200 = false;
       }
     }   
 
