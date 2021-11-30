@@ -27,7 +27,7 @@ var app = express();
 
     if(!req.headers['cache-control']){
       // console.log("1");
-      let accepted_agents = ["Mozilla", "Chrome", "Safari", "Android", "iOS"];
+      let accepted_agents = ["Mozilla", "Chrome", "Safari"];
       // let accepted_agents = ["iOS"];
 
       if(!accepted_agents.some(e => req.headers['user-agent'].includes(e))){
